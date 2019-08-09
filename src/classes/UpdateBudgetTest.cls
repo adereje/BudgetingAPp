@@ -40,6 +40,54 @@ public class UpdateBudgetTest
         }
 		update budgets;
     }
-   
+    @isTest()
+       public static void testDeleteTransaction()
+    {
+        Decimal originalBudget = 500.00;
+        integer numOfTransactions = 5;
+        // List of Budget IDS
+        Set<Id> accountIds = new Set<Id>(); 
+                List<Transaction__c> transactions = [SELECT Total__c,Budget__c FROM Transaction__c WHERE Name='Abiel'];
+
+        // Loop through transactions and store their budget IDs
+        for(Transaction__c t : transactions) {
+            accountIds.add(t.Bank_Account__c);
+        }
+    
+        Set<Id> budgetIds = new Set<Id>(); 
+        
+        // Loop through transactions and store their budget IDs
+        for(Transaction__c t : transactions) {
+            budgetIds.add(t.Budget__c);
+        }
+        
+        // List of Budgets and their fields (SOQL Query)
+        List <Budget__c> budgets = [SELECT Amount__c FROM Budget__c WHERE Id =: budgetIds];
+       
+        // Loop through transactions
+        	// Loop through budgets
+        		// If current transaction's budget equals the current budget
+        			//  do stuff	  	
+        
+        for(Transaction__c t : transactions)
+        {
+            for(Budget__c b : budgets)
+        	{
+            
+            	if(t.Budget__c == b.Id)
+                {
+          			Decimal newBudget = originalBudget + numOfTransactions*t.Total__c;
+
+            		System.assertEquals(newBudget,b.Amount__c);
+                }
+               
+            }
+
+            
+            
+        }
+		update budgets;
+    }
+
 
 }
